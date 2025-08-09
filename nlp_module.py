@@ -1,17 +1,28 @@
-from transformers import pipeline
+import os
+from openai import OpenAI
 from textblob import TextBlob
-import re
 
-# Load QA model once
-qa_pipeline = pipeline("question-answering", model="deepset/roberta-base-squad2")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def extract_metric(document_text, question):
-    """Extract numeric or textual answer from document."""
-    answer = qa_pipeline(question=question, context=document_text)
-    return answer.get("answer", "N/A")
+    """Ask OpenAI to find the answer from the document."""
+    prompt = f"""
+    You are a financial data extractor.
+    Based only on the text below, answer the question.
+
+    Text:
+    {document_text}
+
+    Question: {question}
+    """
+    response = client.responses.create(
+        model="gpt-4o-mini",
+        input=prompt
+    )
+    return response.output_text.strip()
 
 def sentiment_score(document_text):
-    """Quick sentiment polarity score (-1 to +1)."""
+    """Use TextBlob for quick polarity score."""
     blob = TextBlob(document_text)
     return round(blob.sentiment.polarity, 3)
 
