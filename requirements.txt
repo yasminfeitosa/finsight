@@ -1,0 +1,10 @@
+streamlit
+openai
+python-dotenv
+textblob
+yfinance
+prophet
+plotly
+pandas
+numpy
+scikit-learn
