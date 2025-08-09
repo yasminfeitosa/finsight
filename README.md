@@ -18,31 +18,43 @@ Built with:
 ## 🚀 Quick Start
 
 ### 1️⃣ Clone the repository
-
-git clone https://github.com/your-username/findocgpt.git
-cd findocgpt
+```bash
+git clone https://github.com/yasminfeitosa/finsight
+cd finsight
+```
 
 ### 2️⃣ Create and activate a virtual environment
+```bash
 python -m venv venv
 source venv/bin/activate      # Mac/Linux
 venv\Scripts\activate         # Windows
+```
 
 ### 3️⃣ Install dependencies
+```bash
 pip install -r requirements.txt
+```
 
 ### 4️⃣ Set your OpenAI API Key
 .env:
+```bash
 OPENAI_API_KEY=your_api_key_here
+```
 
 Or export it in terminal:
 
+```bash
 export OPENAI_API_KEY="your_api_key_here"   # Mac/Linux
 setx OPENAI_API_KEY "your_api_key_here"     # Windows
+```
 
 ### 5️⃣ Run the app
+```bash
 streamlit run app.py
+```
 
 ## Project Structure
+```bash
 fin_doc_gpt/
 │
 ├── app.py                # Streamlit UI
@@ -52,7 +64,7 @@ fin_doc_gpt/
 ├── requirements.txt
 ├── README.md
 └── .env                  # Your API key (not committed to Git)
-
+```
 
 ## 📌 Usage
 - Upload an earnings report (.txt file).
