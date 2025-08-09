@@ -2,15 +2,16 @@ import streamlit as st
 import plotly.graph_objects as go
 import pandas as pd
 
-# --- STAGE 1: Insights & Analysis ---
+from nlp_module import extract_metric
 
-def load_and_extract_text(file):
-    # Person A: Implement file reading (.txt/.pdf)
-    return "Sample extracted text from uploaded report."
+# --- STAGE 1: Insights & Analysis ---
+@st.cache_data
+def load_financebench_data():
+    df = pd.read_json("docs/financebench_open_source.jsonl", lines=True)
+    return df.to_string
 
 def perform_qa(document_text, question):
-    # Person A: Replace with OpenAI Q&A call
-    return "Sample answer to: " + question
+    return "The answer is: " + extract_metric(document_text, question)
 
 def analyze_sentiment(document_text):
     # Person A: Use TextBlob or similar
@@ -54,44 +55,20 @@ def render_price_chart(df, forecast):
     st.plotly_chart(fig, use_container_width=True)
 
 # --- MAIN APP ---
-
 def main():
     st.title("📊 FinDocGPT – Financial Document AI")
 
-    # Stage 1: Upload + Q&A + Sentiment
+    # Stage 1: Data + Q&A + Sentiment
     st.header("Stage 1: Document Insights")
-    uploaded_file = st.file_uploader("Upload Earnings Report (.txt)", type=["txt"])
-    document_text = ""
-    if uploaded_file:
-        document_text = load_and_extract_text(uploaded_file)
-        st.write("Extracted Text Preview:", document_text[:300] + "...")
-        revenue = perform_qa(document_text, "What is the company's revenue for the quarter?")
-        profit = perform_qa(document_text, "What is the company's net profit?")
-        sentiment = analyze_sentiment(document_text)
-        st.write(f"**Revenue:** {revenue}")
-        st.write(f"**Net Profit:** {profit}")
-        st.write(f"**Sentiment Score:** {sentiment}")
 
-    else:
-        sentiment = 0
+    df_reports = load_financebench_data()
 
-    # Stage 2: Forecasting
-    st.header("Stage 2: Price Forecast")
-    ticker = st.text_input("Enter Stock Ticker (e.g., AAPL)", value="AAPL")
-    if ticker:
-        df = fetch_stock_data(ticker)
-        forecast = forecast_prices(df)
-        current_price = df["y"].iloc[-1]
-        render_price_chart(df, forecast)
+    user_question = st.text_input("What do you want to know?")
 
-        # Stage 3: Recommendation
-        st.header("Stage 3: Investment Recommendation")
-        action, change = generate_recommendation(sentiment, forecast, current_price)
-        change_pct = change * 100
-        st.write(f"**Action:** {action}")
-        st.write(f"**Expected Price Change:** {change_pct:.2f}%")
-
-    # Stage 4 & 5: Integration and polish to come
+    if st.button("Answer"):
+        answer = perform_qa(df_reports, user_question)
+        st.markdown("**Answer:**")
+        st.write(answer)
 
 if __name__ == "__main__":
     main()

@@ -8,7 +8,7 @@ def extract_metric(document_text, question):
     """Ask OpenAI to find the answer from the document."""
     prompt = f"""
     You are a financial data extractor.
-    Based only on the text below, answer the question.
+    Based only on the text below, that is a JSON file from the Finance Bench, answer the question.
 
     Text:
     {document_text}
