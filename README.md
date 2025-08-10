@@ -73,4 +73,4 @@ View:
 - Key financial metrics from the document.
 - Sentiment score.
 - Price forecast chart.
-- Investment recommendation (BUY/SELL/HOLD).
+- Investment recommendation (BUY/SELL/HOLD)."# finsights" 

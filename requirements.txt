@@ -8,3 +8,4 @@ plotly
 pandas
 numpy
 scikit-learn
+PyPDF2
